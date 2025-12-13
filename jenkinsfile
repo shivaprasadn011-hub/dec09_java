@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    tools {
+    maven 'mvn'
+}
+
+
+    stages {
+    
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/shivaprasadn011-hub/dec09_java.git'
+            }
+        }
+        stage('version') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying..."
+            }
+        }
+    }
+}
