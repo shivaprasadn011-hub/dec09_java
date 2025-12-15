@@ -1,46 +1,47 @@
+
 pipeline {
     agent any
+    // environment {
+    //     PATH = "/opt/maven/bin/:$PATH"
+    // }
+    parameters { 
+        booleanParm(name: 'DEPLOY_OR_NOT', defaultValue: true, 
+               description: 'Do you want to Build Stage') 
+    }
     tools {
-    maven 'mvn'
-}
-parameters {
-    booleanParam(
-        name: 'SKIP_TESTS',
-        defaultValue: false,
-        description: 'Skip unit tests?'
-    )
-}
-
-}
-
+        maven 'maven3.9.10'
+    }
 
     stages {
-    
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/shivaprasadn011-hub/dec09_java.git'
-            }
-        }
-        stage('version') {
-            steps {
-                sh 'mvn --version'
-            }
-        }
-      
-        stage('Deploy') {
-            steps {
-              
-               script {
-                 if (params.SKIP_TESTS) {
-                 sh "mvn clean package -DskipTests"
-                 } else {
-                 sh "mvn clean package"
+        stage('Manasa_gitcheckout') {
+            when { 
+                expression {
+                    params.DEPLOY_OR_NOT 
                 }
-            }
-
-         }
-
+            }     
+            steps {
+                git branch: 'Manasa', url: 'https://github.com/shivaprasadn011-hub/dec09_java.git'
             }
         }
+        stage('Manasa_maven-check') {
+            steps {
+               sh 'mvn --version'
+            }
+        }   
+
+        stage('Manasa_Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package'
+                sh 'mvn validate'
+                sh 'mvn install'
+            }
+        }         
+ 
+         stage('December_Validation_Code') {
+            steps {
+                sh 'mvn validate'
+            }
+        }      
+        
     }
 }
