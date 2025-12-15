@@ -4,7 +4,7 @@ pipeline {
     //     PATH = "/opt/maven/bin/:$PATH"
     // }
     parameters { 
-        booleanParam(name: 'DEPLOY_OR_NOT', defaultValue: true, 
+        booleanParam(name: 'DEPLOY_OR_NOT', 
                description: 'Do you want to Build Stage') 
     }
     tools {
