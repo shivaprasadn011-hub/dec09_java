@@ -29,13 +29,16 @@ parameters {
       
         stage('Deploy') {
             steps {
+              
                script {
-    if (params.SKIP_TESTS) {
-        sh "mvn clean package -DskipTests"
-    } else {
-        sh "mvn clean package"
-    }
-}
+                 if (params.SKIP_TESTS) {
+                 sh "mvn clean package -DskipTests"
+                 } else {
+                 sh "mvn clean package"
+                }
+            }
+
+         }
 
             }
         }
