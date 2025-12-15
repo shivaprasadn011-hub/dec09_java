@@ -3,6 +3,13 @@ pipeline {
     tools {
     maven 'mvn'
 }
+parameters {
+    choice(
+        name: 'environment',
+        choices: ['dev', 'qa', 'prod'],
+        description: 'Select target environment'
+    )
+}
 
 
     stages {
@@ -20,7 +27,7 @@ pipeline {
       
         stage('Deploy') {
             steps {
-                echo "Deploying..."
+               sh "echo Deploying to ${params.environment}"
             }
         }
     }
