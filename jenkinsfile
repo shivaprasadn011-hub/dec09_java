@@ -4,11 +4,13 @@ pipeline {
     maven 'mvn'
 }
 parameters {
-    choice(
-        name: 'environment',
-        choices: ['dev', 'qa', 'prod'],
-        description: 'Select target environment'
+    booleanParam(
+        name: 'SKIP_TESTS',
+        defaultValue: false,
+        description: 'Skip unit tests?'
     )
+}
+
 }
 
 
@@ -27,7 +29,14 @@ parameters {
       
         stage('Deploy') {
             steps {
-               sh "echo Deploying to ${params.environment}"
+               script {
+    if (params.SKIP_TESTS) {
+        sh "mvn clean package -DskipTests"
+    } else {
+        sh "mvn clean package"
+    }
+}
+
             }
         }
     }
