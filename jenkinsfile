@@ -9,7 +9,7 @@ pipeline {
                description: 'Do you want to Build Stage') 
     }
     tools {
-        maven 'maven3.9.10'
+        maven 'mvn'
     }
 
     stages {
