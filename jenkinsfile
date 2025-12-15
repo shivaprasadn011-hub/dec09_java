@@ -1,38 +1,45 @@
 pipeline {
     agent any
+    // environment {
+    //     PATH = "/opt/maven/bin/:$PATH"
+    // }
+    parameters { 
+        booleanParam(name: 'DEPLOY_OR_NOT', defaultValue: true, 
+               description: 'Do you want to Build Stage') 
+    }
     tools {
-    maven 'mvn'
-}
-
-
+        maven 'maven3.9.10'
+    }
     stages {
-    
-        stage('Checkout') {
+        stage('Manasa_gitcheckout') {
             steps {
-                git branch: 'main', url: 'https://github.com/shivaprasadn011-hub/dec09_java.git'
+                git branch: 'shiva', url: 'https://github.com/shivaprasadn011-hub/dec09_java'
             }
         }
-        stage('version') {
+        stage('Manasa_maven-check') {
             steps {
-                sh 'mvn --version'
+               sh 'mvn --version'
             }
-        }
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
+        }   
 
-        stage('Test') {
+        stage('Manasa_Build') {
+            when { 
+                expression {
+                    params.DEPLOY_OR_NOT 
+                }
+            } 
             steps {
-                sh 'mvn test'
+                sh 'mvn -B -DskipTests clean package'
+                sh 'mvn validate'
+                sh 'mvn install'
             }
-        }
-
-        stage('Deploy') {
+        }         
+ 
+         stage('December_Validation_Code') {
             steps {
-                echo "Deploying..."
+                echo "Skipped"
             }
-        }
+        }      
+        
     }
 }
