@@ -7,12 +7,12 @@ pipeline {
 
     stages {
     
-        stage('Checkout') {
+        stage('samana_Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/shivaprasadn011-hub/dec09_java.git'
             }
         }
-        stage('version') {
+        stage('samana_version') {
             steps {
                 sh 'mvn --version'
             }
